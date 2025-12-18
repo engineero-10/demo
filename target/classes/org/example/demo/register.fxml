@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="531.0" prefWidth="387.0"
+           style="-fx-background-color: #eef2f3;"
+           xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.demo.controller.RegisterController">
+
+    <VBox alignment="CENTER"
+          spacing="14"
+          prefWidth="360"
+          style="
+              -fx-background-color: white;
+              -fx-padding: 25;
+              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 4);
+          ">
+
+        <!-- Title -->
+        <Label text="Create Account" textFill="#333">
+            <font>
+                <Font size="24"/>
+            </font>
+        </Label>
+
+        <Label text="Fill in the details below" textFill="#777">
+            <font>
+                <Font size="14"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="8"/>
+            </VBox.margin>
+        </Label>
+
+        <!-- Fields -->
+        <TextField fx:id="fullNameField"
+                   promptText="Full Name"
+                   prefHeight="40"/>
+
+        <TextField fx:id="emailField"
+                   promptText="Email Address"
+                   prefHeight="40"/>
+
+        <TextField fx:id="usernameField"
+                   promptText="Username"
+                   prefHeight="40"/>
+
+        <PasswordField fx:id="passwordField"
+                       promptText="Password"
+                       prefHeight="40"/>
+
+        <!-- Status -->
+        <Label fx:id="statusLabel"
+               textFill="RED"
+               visible="false"
+               wrapText="true"/>
+
+        <!-- Button -->
+        <Button text="REGISTER"
+                onAction="#handleRegister"
+                prefWidth="260"
+                prefHeight="40"
+                style="
+                    -fx-background-color: #27ae60;
+                    -fx-text-fill: white;
+                    -fx-font-weight: bold;
+                    -fx-background-radius: 6;
+                    -fx-cursor: hand;
+                "/>
+
+        <!-- Link -->
+        <Hyperlink text="Back to Login"
+                   onAction="#backToLogin"
+                   textFill="#2980b9"/>
+
+    </VBox>
+
+</StackPane>
