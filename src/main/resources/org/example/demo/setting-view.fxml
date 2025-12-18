@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="544.0" maxWidth="1000.0" prefHeight="544.0" prefWidth="1000.0" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Label layoutX="424.0" layoutY="179.0" text="Setting" textFill="WHITE">
-            <font>
-                <Font size="64.0" />
-            </font>
-        </Label>
-    </children>
+<Pane maxHeight="544.0" maxWidth="1000.0" prefHeight="544.0" prefWidth="1000.0" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.controller.SettingsController">
+    <BorderPane maxHeight="544.0" maxWidth="1000.0" prefHeight="544.0" prefWidth="1000.0" style="-fx-background-color: #0b1c2d;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+
+        <center>
+            <VBox alignment="CENTER" maxWidth="700" spacing="20">
+                <padding>
+                    <Insets bottom="30" left="30" right="30" top="30" />
+                </padding>
+
+                <Label style="-fx-font-size: 28px;                           -fx-font-weight: bold;                           -fx-text-fill: white;" text="Settings" />
+
+                <!-- Font Size -->
+                <Label style="-fx-font-size: 20px;                           -fx-font-weight: bold;                           -fx-text-fill: #e63946;" text="Font Size" />
+
+                <Slider fx:id="fontSlider" max="24" min="10" onMouseReleased="#changeFontSize" value="14" />
+
+                <!-- Database -->
+                <Label style="-fx-font-size: 20px;                           -fx-font-weight: bold;                           -fx-text-fill: #e63946;" text="Database Status" />
+
+                <Label fx:id="dbStatusLabel" style="-fx-text-fill: white;" text="Not Checked" />
+
+                <Button onAction="#checkDatabase" style="-fx-background-color: #457b9d;                            -fx-text-fill: white;" text="Check Database">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="btnLogout" layoutX="310.0" layoutY="386.0" onAction="#logout" prefHeight="25.6" prefWidth="100.8" style="-fx-background-color: red; -fx-text-fill: white;" text="Logout">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            </VBox>
+        </center>
+
+    </BorderPane>
 </Pane>
