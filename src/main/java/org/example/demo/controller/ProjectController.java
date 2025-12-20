@@ -109,13 +109,13 @@ public class ProjectController implements Initializable {
 
         Button save = new Button("Save");
         Button cancel = new Button("Cancel");
-
         save.setOnAction(e -> {
-            boolean added = ProjectDao.addProject(
-                    nameField.getText(),
-                    descField.getText(),
-                    timeField.getText()
-            );
+        String projectName = nameField.getText();
+        String projectDesc = descField.getText();
+        String projectTime = timeField.getText();
+            if (!(projectName.trim().equals("")||projectDesc.trim().equals("")||projectTime.trim().equals(""))){
+
+            boolean added = ProjectDao.addProject(projectName , projectDesc,projectTime);
 
             if (added) {
                 loadProjects();
@@ -123,6 +123,8 @@ public class ProjectController implements Initializable {
             } else {
                 showAlert("Error", "Failed to add project");
             }
+            }else
+                showAlert("Error", "Enter all fields");
         });
         save.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
         cancel.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand;");

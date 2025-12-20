@@ -15,9 +15,16 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, password);
             return connection;
-        } catch (SQLException | ClassNotFoundException e) {
-
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            ErrorHandler.showDatabaseError(e);
+            throw new RuntimeException("Database connection failed: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            ErrorHandler.showError(
+                    "Driver Error",
+                    "MySQL Driver not found",
+                    "Please make sure MySQL Connector is properly installed.\n\nError: " + e.getMessage()
+            );
+            throw new RuntimeException("MySQL Driver not found: " + e.getMessage());
         }
     }
 }

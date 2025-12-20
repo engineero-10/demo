@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.example.demo.DAO.AdminDao;
+import org.example.demo.util.ErrorHandler;
 
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ public class LoginController {
     @FXML private Label errorLabel;
     @FXML private Button loginButton;
     @FXML private AnchorPane container;
+
     public void handleLogin() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
@@ -32,12 +34,20 @@ public class LoginController {
             return;
         }
 
-        if (AdminDao.checkAdmin(user, pass)) {
-            goToDashboard();
-        } else {
-            errorLabel.setText("Invalid Username or Password.");
-            errorLabel.setStyle("-fx-text-fill: red;");
-            errorLabel.setVisible(true);
+        try {
+            if (AdminDao.checkAdmin(user, pass)) {
+                goToDashboard();
+            } else {
+                errorLabel.setText("Invalid Username or Password.");
+                errorLabel.setStyle("-fx-text-fill: red;");
+                errorLabel.setVisible(true);
+            }
+        } catch (Exception e) {
+            ErrorHandler.showError(
+                    "Login Error",
+                    "An error occurred during login",
+                    e.getMessage()
+            );
         }
     }
 
@@ -57,14 +67,38 @@ public class LoginController {
             oldStage.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorHandler.showErrorWithException(
+                    "Navigation Error",
+                    "Failed to open dashboard",
+                    e
+            );
+        } catch (Exception e) {
+            ErrorHandler.showError(
+                    "Unexpected Error",
+                    "An unexpected error occurred",
+                    e.getMessage()
+            );
         }
     }
 
-    public void openRegisterPage() throws IOException {
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/org/example/demo/register.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Register New Account");
+    public void openRegisterPage() {
+        try {
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/org/example/demo/register.fxml"));
+            stage.setScene(new Scene(root));
+            stage.setTitle("Register New Account");
+        } catch (IOException e) {
+            ErrorHandler.showErrorWithException(
+                    "Navigation Error",
+                    "Failed to open registration page",
+                    e
+            );
+        } catch (Exception e) {
+            ErrorHandler.showError(
+                    "Unexpected Error",
+                    "An unexpected error occurred",
+                    e.getMessage()
+            );
+        }
     }
 }

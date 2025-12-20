@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import org.example.demo.DAO.AdminDao;
 import org.example.demo.DAO.EmployeeDao;
 import org.example.demo.model.EmployeeWithProjects;
+import org.example.demo.util.ErrorHandler;
 import javafx.geometry.Insets;
 
 public class EmployeeController {
@@ -57,11 +58,11 @@ public class EmployeeController {
         if (errorMessage.isEmpty()) {
             return true;
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Please correct the following errors:");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
+            ErrorHandler.showError(
+                    "Invalid Input",
+                    "Please correct the following errors:",
+                    errorMessage
+            );
             return false;
         }
     }
@@ -112,13 +113,13 @@ public class EmployeeController {
                 );
 
                 if (success) {
+                    ErrorHandler.showSuccess("Success", "Employee added successfully!");
                     loadData();
                 }
             }
         });
     }
 
-    // Method جديد لتعيين موظف في مشروع
     @FXML
     void assignEmployeeToProject(ActionEvent event) {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -151,10 +152,10 @@ public class EmployeeController {
             String proIdText = proIdField.getText().trim();
 
             if (empIdText.isEmpty() || proIdText.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText("Both fields are required!");
-                alert.showAndWait();
+                ErrorHandler.showError(
+                        "Invalid Input",
+                        "Both fields are required!"
+                );
                 ae.consume();
                 return;
             }
@@ -163,10 +164,10 @@ public class EmployeeController {
                 Integer.parseInt(empIdText);
                 Integer.parseInt(proIdText);
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText("IDs must be numbers!");
-                alert.showAndWait();
+                ErrorHandler.showError(
+                        "Invalid Input",
+                        "IDs must be numbers!"
+                );
                 ae.consume();
             }
         });
@@ -180,24 +181,18 @@ public class EmployeeController {
                     boolean success = AdminDao.assignEmployeeInProject(empId, proId);
 
                     if (success) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setHeaderText("Employee assigned to project successfully!");
-                        alert.showAndWait();
+                        ErrorHandler.showSuccess(
+                                "Success",
+                                "Employee assigned to project successfully!"
+                        );
                         loadData();
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Failed to assign employee to project!");
-                        alert.setContentText("Please check if the Employee ID and Project ID are valid.");
-                        alert.showAndWait();
                     }
                 } catch (Exception e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("An error occurred!");
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
+                    ErrorHandler.showError(
+                            "Error",
+                            "An error occurred!",
+                            e.getMessage()
+                    );
                 }
             }
         });
@@ -224,10 +219,14 @@ public class EmployeeController {
 
                 deleteBtn.setOnAction(e -> {
                     EmployeeWithProjects emp = getTableView().getItems().get(getIndex());
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete: " + emp.getName() + "?", ButtonType.YES, ButtonType.NO);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "Are you sure you want to delete: " + emp.getName() + "?",
+                            ButtonType.YES, ButtonType.NO);
                     alert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.YES) {
-                            if (EmployeeDao.deleteEmployee(emp.getEmployeeId())) {
+                            boolean success = EmployeeDao.deleteEmployee(emp.getEmployeeId());
+                            if (success) {
+                                ErrorHandler.showSuccess("Success", "Employee deleted successfully!");
                                 loadData();
                             }
                         }
@@ -289,7 +288,10 @@ public class EmployeeController {
                         emailField.getText().trim(),
                         positionField.getText().trim()
                 );
-                if (success) loadData();
+                if (success) {
+                    ErrorHandler.showSuccess("Success", "Employee updated successfully!");
+                    loadData();
+                }
             }
         });
     }
