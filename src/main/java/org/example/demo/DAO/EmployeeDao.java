@@ -21,8 +21,7 @@ public class EmployeeDao {
             ps.setString(3, position);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
     public static boolean updateEmployee(int id ,String name, String email, String position) {
@@ -38,8 +37,7 @@ public class EmployeeDao {
             int result = ps.executeUpdate();
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -51,8 +49,7 @@ public class EmployeeDao {
             int result = ps.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -67,7 +64,7 @@ public class EmployeeDao {
                 employee = new Employee(result.getInt("emp_id"),result.getString("name"),result.getString("email"),result.getString("position"));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         return employee;
     }
@@ -81,7 +78,7 @@ public class EmployeeDao {
                 employees.add(new EmployeeWithProjects(result.getInt("Emp_ID"),result.getString("Name"),result.getString("Email"),result.getString("Position"),result.getInt("Pro_ID"),result.getString("Project Name"),result.getString("Start Date")));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         return employees;
     }

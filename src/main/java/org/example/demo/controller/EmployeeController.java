@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import org.example.demo.DAO.AdminDao;
 import org.example.demo.DAO.EmployeeDao;
 import org.example.demo.model.EmployeeWithProjects;
 import javafx.geometry.Insets;
@@ -36,7 +37,6 @@ public class EmployeeController {
     private boolean isInputValid(String name, String email, String position) {
         String errorMessage = "";
 
-
         if (name == null || name.trim().isEmpty()) {
             errorMessage += "Name cannot be empty!\n";
         } else if (!name.matches("^[a-zA-Z\\s]+$")) {
@@ -53,6 +53,7 @@ public class EmployeeController {
         if (position == null || position.trim().isEmpty()) {
             errorMessage += "Position cannot be empty!\n";
         }
+
         if (errorMessage.isEmpty()) {
             return true;
         } else {
@@ -64,6 +65,7 @@ public class EmployeeController {
             return false;
         }
     }
+
     @FXML
     void addEmployee(ActionEvent event) {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -116,6 +118,91 @@ public class EmployeeController {
         });
     }
 
+    // Method جديد لتعيين موظف في مشروع
+    @FXML
+    void assignEmployeeToProject(ActionEvent event) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Assign Employee to Project");
+        dialog.setHeaderText("Enter Employee ID and Project ID");
+
+        ButtonType assignButtonType = new ButtonType("Assign", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(assignButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(15);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField empIdField = new TextField();
+        empIdField.setPromptText("Employee ID");
+        TextField proIdField = new TextField();
+        proIdField.setPromptText("Project ID");
+
+        grid.add(new Label("Employee ID:"), 0, 0);
+        grid.add(empIdField, 1, 0);
+        grid.add(new Label("Project ID:"), 0, 1);
+        grid.add(proIdField, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        final Button btAssign = (Button) dialog.getDialogPane().lookupButton(assignButtonType);
+        btAssign.addEventFilter(ActionEvent.ACTION, ae -> {
+            String empIdText = empIdField.getText().trim();
+            String proIdText = proIdField.getText().trim();
+
+            if (empIdText.isEmpty() || proIdText.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText("Both fields are required!");
+                alert.showAndWait();
+                ae.consume();
+                return;
+            }
+
+            try {
+                Integer.parseInt(empIdText);
+                Integer.parseInt(proIdText);
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText("IDs must be numbers!");
+                alert.showAndWait();
+                ae.consume();
+            }
+        });
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == assignButtonType) {
+                try {
+                    int empId = Integer.parseInt(empIdField.getText().trim());
+                    int proId = Integer.parseInt(proIdField.getText().trim());
+
+                    boolean success = AdminDao.assignEmployeeInProject(empId, proId);
+
+                    if (success) {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Success");
+                        alert.setHeaderText("Employee assigned to project successfully!");
+                        alert.showAndWait();
+                        loadData();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Failed to assign employee to project!");
+                        alert.setContentText("Please check if the Employee ID and Project ID are valid.");
+                        alert.showAndWait();
+                    }
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("An error occurred!");
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                }
+            }
+        });
+    }
+
     private void setupTableColumns() {
         colId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -152,6 +239,7 @@ public class EmployeeController {
                     showEditDialog(emp);
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -159,6 +247,7 @@ public class EmployeeController {
             }
         });
     }
+
     private void showEditDialog(EmployeeWithProjects emp) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Edit Employee");
@@ -168,19 +257,22 @@ public class EmployeeController {
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
-        grid.setHgap(10); grid.setVgap(15);
+        grid.setHgap(10);
+        grid.setVgap(15);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField nameField = new TextField(emp.getName());
         TextField emailField = new TextField(emp.getEmail());
         TextField positionField = new TextField(emp.getPosition());
 
-        grid.add(new Label("Name:"), 0, 0); grid.add(nameField, 1, 0);
-        grid.add(new Label("Email:"), 0, 1); grid.add(emailField, 1, 1);
-        grid.add(new Label("Position:"), 0, 2); grid.add(positionField, 1, 2);
+        grid.add(new Label("Name:"), 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(new Label("Email:"), 0, 1);
+        grid.add(emailField, 1, 1);
+        grid.add(new Label("Position:"), 0, 2);
+        grid.add(positionField, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
-
 
         final Button btOk = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
         btOk.addEventFilter(ActionEvent.ACTION, event -> {

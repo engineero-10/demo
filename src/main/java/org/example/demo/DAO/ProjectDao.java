@@ -22,8 +22,7 @@ public class ProjectDao {
             ps.setString(3, time_estimation);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
     public static boolean updateProject(int pro_id ,String pro_name, String description, String time_estimation) {
@@ -39,8 +38,7 @@ public class ProjectDao {
             int result = ps.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -52,8 +50,7 @@ public class ProjectDao {
             int result = ps.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -68,7 +65,7 @@ public class ProjectDao {
                 project = new Project(result.getInt("pro_id"),result.getString("pro_name"),result.getString("description"),result.getString("time_estimation"));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         return project;
     }
@@ -82,7 +79,7 @@ public class ProjectDao {
                 projects.add(new Project(result.getInt("pro_id"),result.getString("pro_name"),result.getString("description"),result.getString("time_estimation")));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         return projects;
     }

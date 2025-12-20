@@ -37,6 +37,17 @@
                         <Insets bottom="7" left="15" right="15" top="7"/>
                     </padding>
                 </Button>
+
+                <Button mnemonicParsing="false" onAction="#assignEmployeeToProject"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;"
+                        text="📋 Assign to Project">
+                    <font>
+                        <Font name="System Bold" size="13.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="7" left="15" right="15" top="7"/>
+                    </padding>
+                </Button>
             </children>
         </HBox>
 

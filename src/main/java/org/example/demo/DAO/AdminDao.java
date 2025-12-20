@@ -22,8 +22,7 @@ public class AdminDao {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
     public static boolean addAdmin(String name, String email, String username, String password) {
@@ -41,7 +40,19 @@ public class AdminDao {
                 return false;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+    public static boolean assignEmployeeInProject(int empId,int proId){
+        String sql ="insert into employee_project (project_id,employee_id) values (?,?)";
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setInt(1,proId);
+            ps.setInt(2,empId);
+            int result = ps.executeUpdate();
+            return result>0;
+        }catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
