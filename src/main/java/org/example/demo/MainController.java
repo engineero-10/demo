@@ -28,16 +28,16 @@ public class MainController implements Initializable{
             throw new RuntimeException(e);
         }
      }
-    public void home(ActionEvent event){
-         Parent fxml = null;
-         try {
-             fxml = FXMLLoader.load(getClass().getResource("home-view.fxml"));
-            contentArea.getChildren().removeAll();
-            contentArea.getChildren().addAll(fxml);
-         } catch (IOException e) {
-             throw new RuntimeException(e);
-         }
-     }
+//    public void home(ActionEvent event){
+//         Parent fxml = null;
+//         try {
+//             fxml = FXMLLoader.load(getClass().getResource("home-view.fxml"));
+//            contentArea.getChildren().removeAll();
+//            contentArea.getChildren().addAll(fxml);
+//         } catch (IOException e) {
+//             throw new RuntimeException(e);
+//         }
+//     }
     public void employee(ActionEvent event){
         Parent fxml = null;
         try {

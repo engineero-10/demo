@@ -21,22 +21,12 @@ public class MainController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         close.setOnMouseClicked(e->System.exit(0));
         try{
-            Parent fxml = FXMLLoader.load(getClass().getResource("/org/example/demo/home-view.fxml"));
+            Parent fxml = FXMLLoader.load(getClass().getResource("/org/example/demo/employee-view.fxml"));
             contentArea.getChildren().removeAll();
             contentArea.getChildren().addAll(fxml);
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
-     }
-    public void home(ActionEvent event){
-         Parent fxml = null;
-         try {
-             fxml = FXMLLoader.load(getClass().getResource("/org/example/demo/home-view.fxml"));
-            contentArea.getChildren().removeAll();
-            contentArea.getChildren().addAll(fxml);
-         } catch (IOException e) {
-             throw new RuntimeException(e);
-         }
      }
     public void employee(ActionEvent event){
         Parent fxml = null;

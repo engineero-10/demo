@@ -12,6 +12,22 @@ public class Project {
         this.timeEstimation = timeEstimation;
     }
 
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTimeEstimation(String timeEstimation) {
+        this.timeEstimation = timeEstimation;
+    }
+
     public String getProjectName() {
         return projectName;
     }

@@ -38,13 +38,13 @@
             <children>
                 <VBox layoutY="49.0" prefHeight="368.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#home" prefHeight="35.0"
-                                prefWidth="200.0" style="-fx-background-color: transparent;" text="Home"
-                                textFill="WHITE">
-                            <font>
-                                <Font size="18.0"/>
-                            </font>
-                        </Button>
+<!--                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#home" prefHeight="35.0"-->
+<!--                                prefWidth="200.0" style="-fx-background-color: transparent;" text="Home"-->
+<!--                                textFill="WHITE">-->
+<!--                            <font>-->
+<!--                                <Font size="18.0"/>-->
+<!--                            </font>-->
+<!--                        </Button>-->
                         <Button mnemonicParsing="false" onAction="#employee" prefHeight="35.0" prefWidth="200.0"
                                 style="-fx-background-color: transparent;" text="Employees" textFill="WHITE">
                             <font>
